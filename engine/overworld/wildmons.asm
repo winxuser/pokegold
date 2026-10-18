@@ -213,8 +213,17 @@ TryWildEncounter::
 	call GetMapEncounterRate
 	call ApplyMusicEffectOnEncounterRate
 	call ApplyCleanseTagEffectOnEncounterRate
+	call ApplyRunningEffectOnEncounterRate
 	call Random
 	cp b
+	ret
+
+ApplyRunningEffectOnEncounterRate::
+; Running doubles encounter rate.
+	ld a, [wPlayerState]
+	cp PLAYER_RUN
+	ret nz
+	sla b
 	ret
 
 GetMapEncounterRate:
