@@ -604,6 +604,8 @@ FlyFunction:
 	newloadmap MAPSETUP_TELEPORT
 	callasm FlyToAnim
 	special WaitSFX
+	ld e, PAL_OW_RED
+	farcall SetFirstOBJPalette
 	special UpdatePlayerSprite
 	callasm LoadWalkingSpritesGFX
 	end

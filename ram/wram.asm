@@ -1191,7 +1191,7 @@ wCurSpecies:: db
 
 wNamedObjectType:: db
 
-	ds 1
+;	ds 1
 
 wJumptableIndex:: db
 
@@ -1216,6 +1216,9 @@ NEXTU
 wPrevDexEntryJumptableIndex:: db
 wPrevDexEntryBackup::
 wPokedexStatus:: db
+wPokedexShinyToggle::
+; bit 0: set if displaying shiny palettes
+	db
 wUnusedPokedexByte:: db
 
 NEXTU
@@ -1942,7 +1945,7 @@ wSpriteFlags:: db
 
 wHandlePlayerStep:: db
 
-	ds 1
+wCurIconMonHasItemOrMail:: db
 
 wPartyMenuActionText:: db
 

@@ -593,7 +593,7 @@ CGB_ApplyPartyMenuHPPals:
 InitPartyMenuOBPals:
 	ld hl, PartyMenuOBPals
 	ld de, wOBPals1
-	ld bc, 2 palettes
+	ld bc, 8 palettes
 	call CopyBytes
 	ret
 
@@ -1207,7 +1207,94 @@ endr
 	ld de, wBGPals1 palette PAL_BG_ROOF color 1
 	ld bc, 4
 	call CopyBytes
+	; Day Care outdoor palettes
+	ld a, [wMapGroup]
+	cp GROUP_ROUTE_34
+	ret nz
+
+	ld a, [wMapNumber]
+	cp MAP_ROUTE_34
+	ret nz
+
+	ld a, BANK(wBreedMon1Species)
+	ld hl, wBreedMon1Species
+	call GetFarByte
+	and a
+	jr z, .day_care_mon_2
+	ld [wCurPartySpecies], a
+
+	ld hl, wBreedMon1DVs ; HL now points to the params of the wBreedMon1, which is needed by GetMenuMonIconPalette to determine if it's shiny.
+	ld de, GetMenuMonIconPalette
+	ld a, BANK(GetMenuMonIconPalette)
+	call FarCall_de
+	ld a, e
+	add a
+	add a
+	add a
+	ld e, a
+	ld d, 0
+	ld hl, PartyMenuOBPals
+	add hl, de
+
+	inc hl
+	inc hl
+
+	ld de, wOBPals1 palette PAL_OW_PINK + 2
+	ld bc, 1 palettes - 2
+	ld a, BANK(wOBPals1)
+	call CopyBytes
+
+.day_care_mon_2
+	ld a, BANK(wBreedMon2Species)
+	ld hl, wBreedMon2Species
+	call GetFarByte
+	and a
+	ret z
+	ld [wCurPartySpecies], a
+
+	ld hl, wBreedMon2DVs ; HL now points to the params of the wBreedMon2, which is needed by GetMenuMonIconPalette to determine if it's shiny.
+	ld de, GetMenuMonIconPalette
+	ld a, BANK(GetMenuMonIconPalette)
+	call FarCall_de
+	ld a, e
+	add a
+	add a
+	add a
+	ld e, a
+	ld d, 0
+	ld hl, PartyMenuOBPals
+	add hl, de
+
+	inc hl
+	inc hl
+
+	ld de, wOBPals1 palette PAL_OW_ROCK + 2
+	ld bc, 1 palettes - 2
+	ld a, BANK(wOBPals1)
+	call CopyBytes
 	ret
+
+; Input: E must contain the offset of the selected palette from PartyMenuOBPals.
+SetFirstOBJPalette::
+	ld hl, PartyMenuOBPals
+	ld d, 0
+	add hl, de
+ 	ld de, wOBPals1
+	ld bc, 1 palettes
+	ld a, BANK(wOBPals1)
+	call CopyBytes
+	ld a, TRUE
+ 	ldh [hCGBPalUpdate], a
+ 	jp CopyBytes
+
+	 LoadPokemonPalette:
+	ld a, [wCurPartySpecies]
+	; hl = palette
+	call GetMonPalettePointer
+	; load palette into de (set by caller)
+	ld bc, PAL_COLOR_SIZE * 2
+	ld a, BANK(wBGPals1)
+	jp CopyBytes
 
 INCLUDE "data/maps/environment_colors.asm"
 
