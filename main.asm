@@ -174,7 +174,6 @@ INCLUDE "data/battle/effect_command_pointers.asm"
 
 SECTION "bank10", ROMX
 
-INCLUDE "engine/pokedex/pokedex.asm"
 INCLUDE "data/moves/moves.asm"
 INCLUDE "engine/pokemon/evolve.asm"
 
@@ -375,6 +374,9 @@ INCLUDE "engine/rtc/print_hours_mins.asm"
 INCLUDE "engine/pokedex/pokedex_3.asm"
 INCLUDE "engine/events/catch_tutorial_input.asm"
 INCLUDE "engine/pokegear/townmap_convertlinebreakcharacters.asm"
+
+SECTION "Addons", ROMX
+INCLUDE "engine/pokedex/pokedex.asm"
 
 
 SECTION "Credits Strings", ROMX
